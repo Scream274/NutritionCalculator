@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .content {
+            text-align: center;
+        }
+
+        .navbar-nav {
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation menu -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="/home">Home Page</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <!-- Check if the user is authenticated -->
+                <div th:if="${#authorization.expression('isAuthenticated()')}">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/my-account">My profile</a>
+                    </li>
+                </div>
+                <!-- If the user is not authenticated -->
+                <div th:unless="${#authorization.expression('isAuthenticated()')}">
+                    <li class="nav-item d-inline-block">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item d-inline-block">
+                        <a class="nav-link" href="/registration">Registration</a>
+                    </li>
+                </div>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!-- Page content -->
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12 content mx-md-5">
+            <h2>Nutrition Calculator</h2>
+            <p>
+                The Nutrition Calculator project is designed to assist users in obtaining detailed nutritional
+                information about various food products. With a user-friendly interface, this application allows users
+                to input the name of a food product and receive its nutritional characteristics instantly. The provided
+                data includes essential nutritional values such as calories, serving size, fat content, protein, sodium,
+                potassium, cholesterol, total carbohydrates, fiber, and sugar.</p>
+            <p>
+                This platform aims to empower individuals in making informed dietary choices by providing comprehensive
+                nutritional insights into different food items. The system fetches real-time data from an external API
+                to ensure accuracy and reliability in the nutritional information provided.</p>
+        </div>
+    </div>
+    <div class="row mt-4 justify-content-center">
+        <div class="col-md-6 content">
+            <h2>Get Product Characteristics</h2>
+            <form th:action="@{/get-product-info}" method="post">
+                <div class="form-group">
+                    <label for="productInput">Enter product name:</label>
+                    <input type="text" class="form-control" id="productInput" name="productName" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Get Characteristics</button>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-4" th:if="${product != null}">
+        <div class="col-md-12 content" id="productCharacteristics">
+            <h2 th:text="'Product: ' + ${product.name.toUpperCase()}">Product Characteristics</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Property</th>
+                    <th scope="col">Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Calories</td>
+                    <td th:text="${product.calories}"></td>
+                </tr>
+                <tr>
+                    <td>Fat Total (g)</td>
+                    <td th:text="${product.fat_total_g}"></td>
+                </tr>
+                <tr>
+                    <td>Fat Saturated (g)</td>
+                    <td th:text="${product.fat_saturated_g}"></td>
+                </tr>
+                <tr>
+                    <td>Protein (g)</td>
+                    <td th:text="${product.protein_g}"></td>
+                </tr>
+                <tr>
+                    <td>Sodium (mg)</td>
+                    <td th:text="${product.sodium_mg}"></td>
+                </tr>
+                <tr>
+                    <td>Potassium (mg)</td>
+                    <td th:text="${product.potassium_mg}"></td>
+                </tr>
+                <tr>
+                    <td>Cholesterol (mg)</td>
+                    <td th:text="${product.cholesterol_mg}"></td>
+                </tr>
+                <tr>
+                    <td>Carbohydrates (g)</td>
+                    <td th:text="${product.carbohydrates_total_g}"></td>
+                </tr>
+                <tr>
+                    <td>Fiber (g)</td>
+                    <td th:text="${product.fiber_g}"></td>
+                </tr>
+                <tr>
+                    <td>Sugar (g)</td>
+                    <td th:text="${product.sugar_g}"></td>
+                </tr>
+                <!-- Add other characteristics -->
+                <!-- ... -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Bootstrap JS and jQuery (required for certain Bootstrap features) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

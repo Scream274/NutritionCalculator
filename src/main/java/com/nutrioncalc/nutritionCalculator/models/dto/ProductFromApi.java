@@ -1,5 +1,8 @@
 package com.nutrioncalc.nutritionCalculator.models.dto;
 
+import lombok.Data;
+
+@Data
 public class ProductFromApi {
     private String name;
     private Double calories;
