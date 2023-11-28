@@ -28,24 +28,26 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <!-- Check if the user is authenticated -->
-                <div th:if="${#authorization.expression('isAuthenticated()')}">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/my-account">My profile</a>
-                    </li>
-                </div>
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link" href="/my-account">My profile</a>
+                </li>
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <form class="form-inline" action="/logout" method="post">
+                        <button class="btn btn-link nav-link" type="submit">Logout</button>
+                    </form>
+                </li>
                 <!-- If the user is not authenticated -->
-                <div th:unless="${#authorization.expression('isAuthenticated()')}">
-                    <li class="nav-item d-inline-block">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                    <li class="nav-item d-inline-block">
-                        <a class="nav-link" href="/registration">Registration</a>
-                    </li>
-                </div>
+                <li th:unless="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li th:unless="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link" href="/registration">Registration</a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+
 
 
 <!-- Page content -->
