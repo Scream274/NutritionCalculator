@@ -1,4 +1,4 @@
-package com.nutrioncalc.NutritionCalculator;
+package com.nutrioncalc.nutritionCalculator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
