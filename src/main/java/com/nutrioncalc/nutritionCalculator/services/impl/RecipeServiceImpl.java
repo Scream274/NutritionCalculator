@@ -12,7 +12,6 @@ import com.nutrioncalc.nutritionCalculator.repositories.RecipeRepository;
 import com.nutrioncalc.nutritionCalculator.services.ProductService;
 import com.nutrioncalc.nutritionCalculator.services.RecipeService;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,7 +43,6 @@ public class RecipeServiceImpl implements RecipeService {
         return recipe;
     }
 
-    @NotNull
     private Function<IngredientDto, RecipeIngredient> recipeIngredientsFromIngredientsDto() {
         return pr -> {
             ProductFromApi productFromApi = productClient.getProductInfo(pr.getName());

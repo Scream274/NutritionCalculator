@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -23,25 +24,34 @@ public class UserNutrition {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
+
     private String fullName;
+
     @Column(length = 100, unique = true)
     @NotBlank(message = "Email cant be empty")
     @Email
     private String email;
+
     @Column(nullable = false)
     @NotBlank(message = "Password cant be empty")
     private String password;
+
     private Integer weight;
+
     private Integer height;
+
     private Integer age;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 32)
     private Gender gender = Gender.OTHER;
+
     private Double BMI;
 
     @ToString.Exclude
+    @Setter(AccessLevel.PRIVATE)
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<DailyStat> dailyStatistic;
+    private Set<DailyStat> dailyStatistic = new HashSet<>();
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "person_id"))
@@ -50,18 +60,27 @@ public class UserNutrition {
 
     @Override
     public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
+        if (this == o)
+            return true;
+        if (o == null)
+            return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy
+                ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass()
+                : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy
+                ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass()
+                : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass)
+            return false;
         UserNutrition that = (UserNutrition) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override
     public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+        return this instanceof HibernateProxy
+                ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode()
+                : getClass().hashCode();
     }
 
     public void calculateBMI() {
