@@ -5,7 +5,6 @@ import com.nutrioncalc.nutritionCalculator.models.UserNutrition;
 import com.nutrioncalc.nutritionCalculator.models.dto.UserForCreate;
 import com.nutrioncalc.nutritionCalculator.services.UserService;
 import jakarta.validation.Valid;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -2,10 +2,13 @@ package com.nutrioncalc.nutritionCalculator.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nutrioncalc.nutritionCalculator.models.UserNutrition;
-import com.nutrioncalc.nutritionCalculator.models.dto.UserForCreate;
 import com.nutrioncalc.nutritionCalculator.models.dto.UserForUpdate;
 import com.nutrioncalc.nutritionCalculator.services.UserService;
+import com.nutrioncalc.nutritionCalculator.utils.UserMapper;
+
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,22 +19,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 
 @Controller
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
     private final ObjectMapper objectMapper;
-
-    public UserController(UserService userService, ObjectMapper objectMapper) {
-        this.userService = userService;
-        this.objectMapper = objectMapper;
-    }
 
     @GetMapping("/my-account")
     public String showProfilePage(Model model, Principal principal) {
         if (principal != null) {
             String email = principal.getName();
             UserNutrition user = userService.findByEmail(email);
-            UserForUpdate userForUpdate = objectMapper.convertValue(user, UserForUpdate.class);
+            UserForUpdate userForUpdate = UserMapper.toUserForUpdate(user);
             model.addAttribute("user", userForUpdate);
             return "profile";
         }
