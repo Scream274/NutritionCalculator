@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Recipe</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-4">
+    <h2>Create Recipe</h2>
+    <form action="/save-recipe" method="post" th:object="${recipeDto}">
+
+        <div class="form-group">
+            <label for="recipeName">Recipe Name:</label>
+            <input type="text" class="form-control" id="recipeName" th:field="*{recipeName}" required>
+        </div>
+
+        <div id="ingredients">
+            <div class="ingredient-item">
+                <label for="ingredientName">Ingredient Name:</label>
+                <input type="text" class="form-control" th:field="*{ingredients[0].name}" required>
+
+                <label for="ingredientQuantity">Amount:</label>
+                <input type="number" class="form-control" th:field="*{ingredients[0].amount}" required>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-primary mt-5" onclick="addIngredient()">Add Ingredient</button>
+        <button type="submit" class="btn btn-success mt-5">Save Recipe</button>
+    </form>
+</div>
+
+<script>
+    let ingredientIndex = 0;
+
+    function addIngredient() {
+        ingredientIndex++;
+
+        var ingredientTemplate = `
+            <div class="ingredient-item">
+                <label for="ingredientName">Ingredient Name:</label>
+                <input type="text" class="form-control" name="ingredients[${ingredientIndex}].name" required>
+
+                <label for="ingredientQuantity">Amount:</label>
+                <input type="number" class="form-control" name="ingredients[${ingredientIndex}].amount" required>
+            </div>
+        `;
+
+        document.getElementById("ingredients").insertAdjacentHTML('beforeend', ingredientTemplate);
+    }
+</script>
+
+
+
+</body>
+</html>

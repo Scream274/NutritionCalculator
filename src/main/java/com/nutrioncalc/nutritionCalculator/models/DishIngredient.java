@@ -1,12 +1,16 @@
 package com.nutrioncalc.nutritionCalculator.models;
 
-import com.nutrioncalc.nutritionCalculator.models.dto.ProductFromApi;
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class DishIngredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +20,7 @@ public class DishIngredient {
     @JoinColumn(name = "stat_id")
     private DailyStat dailyStat;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "product_id")
     private Product product;
 
@@ -28,7 +32,7 @@ public class DishIngredient {
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         DishIngredient that = (DishIngredient) o;
-        return id != null && Objects.equals(id, that.id);
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override

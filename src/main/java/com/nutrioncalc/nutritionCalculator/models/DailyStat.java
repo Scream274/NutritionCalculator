@@ -23,7 +23,7 @@ public class DailyStat {
     @Column(name = "stat_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_ref")
     private UserNutrition user;
 
@@ -34,6 +34,7 @@ public class DailyStat {
             cascade = {PERSIST, MERGE, REFRESH, DETACH},
             orphanRemoval = true)
     @ToString.Exclude
+    @Setter(AccessLevel.PRIVATE)
     private List<DishIngredient> dishIngredients = new ArrayList<>();
 
     @Override
@@ -50,5 +51,9 @@ public class DailyStat {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    public void addDishIngredients(List<DishIngredient> dishIngredients) {
+        this.dishIngredients.addAll(dishIngredients);
     }
 }

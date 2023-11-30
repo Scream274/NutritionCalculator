@@ -40,7 +40,7 @@ public class UserNutrition {
     private Double BMI;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<DailyStat> dailyStatistic;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
