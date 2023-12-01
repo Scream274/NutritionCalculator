@@ -39,6 +39,14 @@
             border-style: none;
             width: 50px;
         }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            margin-top: 18px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -150,8 +158,12 @@
                 </table>
             </div>
         </div>
-    </div>
 
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger py-2">
+        <p th:text="${errorMessage}" style="
+            margin-bottom: 0px;"></p>
+    </div>
 </div>
 
 <!-- Bootstrap JS and jQuery (required for certain Bootstrap features) -->

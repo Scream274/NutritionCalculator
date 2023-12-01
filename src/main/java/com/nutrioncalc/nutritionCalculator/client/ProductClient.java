@@ -17,7 +17,6 @@ public class ProductClient {
         try {
             productName = productName.replace(" ", "%20");
             url = new URL("https://api.api-ninjas.com/v1/nutrition?query=" + productName);
-            System.out.println(url);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("accept", "application/json");
             String apiKey = "ZgFb3FbuGCZ4t8hnH9dbAg==7LzrtT64xV4zhNia";
@@ -26,8 +25,9 @@ public class ProductClient {
             ObjectMapper mapper = new ObjectMapper();
             try (InputStream responseStream = connection.getInputStream()) {
                 ProductFromApi[] products = mapper.readValue(responseStream, ProductFromApi[].class);
-                System.out.println(products[0].getName());
-                return products[0];
+                if (products.length > 0) {
+                    return products[0];
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

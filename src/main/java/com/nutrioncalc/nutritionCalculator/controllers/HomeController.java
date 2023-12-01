@@ -25,7 +25,12 @@ public class HomeController {
     @PostMapping("/get-product-info")
     public String getProductInfo(@RequestParam("productName") String productName, Model model) {
         ProductFromApi productInfo = productService.getInfo(productName);
-        model.addAttribute("product", productInfo);
+
+        if (productInfo.getName() == null) {
+            model.addAttribute("errorMessage", "Product '" + productName + "' was not found!");
+        } else {
+            model.addAttribute("product", productInfo);
+        }
         return "index";
     }
 }
