@@ -6,20 +6,58 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        .content {
-            text-align: center;
-        }
-
         .navbar-nav {
             align-items: center;
+        }
+
+        .container {
+            background: linear-gradient(135deg, rgb(231 231 231 / 46%), rgb(0 0 0 / 24%));
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .statistics-form {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            margin-top: 22px;
+        }
+
+        .btn-warning {
+            color: white;
+            font-weight: 400;
+            background-color: #ffc107;
+            border-color: #ffc107;
+            margin-top: 32px;
+            width: 180px;
+        }
+
+        p {
+            text-align: center;
+            margin: 5px;
+        }
+
+        .navbar-light .navbar-nav .nav-link {
+            color: rgb(255 255 255);
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: dodgerblue;
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
 
 <!-- Navigation menu -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container px-4">
         <a class="navbar-brand" href="/home">Home Page</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,6 +69,9 @@
                     <a class="nav-link" href="/my-account">My profile</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/recipes">Recipes</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/logout">Logout</a>
                 </li>
             </ul>
@@ -38,13 +79,21 @@
     </div>
 </nav>
 
-<!-- Profile form content -->
+
+<!-- Profile and Statistics forms -->
 <div class="container mt-4">
     <div class="row">
-        <div class="col-md-12 content mx-md-5">
-            <div th:if="${successMessage}" class="alert alert-success">
+        <!-- Profile form -->
+        <div class="col-md-6 mb-4">
+            <div th:if="${successMessage}" class="alert alert-success" style="
+                        padding: 0;
+                        border-top-width: 2px;
+                        border-right-width: 2px;
+                        border-bottom-width: 2px;
+                        border-left-width: 2px;">
                 <p th:text="${successMessage}"></p>
-            </div>            <h2>Profile</h2>
+            </div>
+            <h2 class="text-center mb-4">Profile</h2>
             <form th:action="@{/update-profile}" th:object="${user}" method="post">
                 <div class="form-group">
                     <label for="fullNameInput">Full Name:</label>
@@ -81,8 +130,61 @@
                     <label for="bmiInput">BMI:</label>
                     <input type="text" class="form-control" id="bmiInput" th:value="*{BMI}" readonly>
                 </div>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
             </form>
+        </div>
+        <!-- Statistics form -->
+        <div class="col-md-6">
+            <div class="container mt-4">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <form action="#" th:action="@{/my-account}" method="get" class="statistics-form">
+                            <div class="form-row align-items-center">
+                                <div class="col-auto">
+                                    <label for="selectedDate" class="mr-2">Select Date for Statistics:</label>
+                                    <input type="date" id="selectedDate" name="selectedDate"
+                                           th:value="${selectedDate != null} ? ${#temporals.format(selectedDate, 'yyyy-MM-dd')} : ${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}"
+                                           class="form-control">
+                                </div>
+                                <div class="col-auto text-center">
+                                    <button type="submit" class="btn btn-warning">Get Statistics</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div th:if="${profileStatistic != null}" class="mt-4">
+                <h2 class="text-center mb-3">Profile Statistics</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Category</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Total Calories</td>
+                            <td th:text="${profileStatistic.calories}"></td>
+                        </tr>
+                        <tr>
+                            <td>Total Fat</td>
+                            <td th:text="${profileStatistic.fat}"></td>
+                        </tr>
+                        <tr>
+                            <td>Total Carbohydrates</td>
+                            <td th:text="${profileStatistic.carbohydrates}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -93,3 +195,5 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+

@@ -4,9 +4,55 @@
     <meta charset="UTF-8">
     <title>Create Recipe</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        .navbar-nav {
+            align-items: center;
+        }
+
+        .container {
+            background: linear-gradient(135deg, rgb(231 231 231 / 46%), rgb(0 0 0 / 24%));
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .navbar-light .navbar-nav .nav-link {
+            color: rgb(255 255 255);
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        p {
+            text-align: center;
+            margin: 5px;
+        }
+    </style>
 </head>
 <body>
-
+<!-- Navigation menu -->
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container px-4">
+        <a class="navbar-brand" href="/home">Home Page</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/my-account">My profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/recipes">Recipes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div class="container mt-4">
     <h2>Create Recipe</h2>
     <form action="/save-recipe" method="post" th:object="${recipeDto}">
@@ -51,7 +97,9 @@
     }
 </script>
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>

@@ -33,8 +33,11 @@ public class WebSecurityConfig {
                 )
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll
                 )
-                .logout(LogoutConfigurer::permitAll);
-
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .permitAll()
+                );
         return http.build();
     }
 

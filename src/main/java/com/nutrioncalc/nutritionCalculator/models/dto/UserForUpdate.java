@@ -32,8 +32,7 @@ public class UserForUpdate {
     
     private Double BMI;
     
-    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 32)
-    private Gender gender = Gender.OTHER;
+    private Gender gender;
 }

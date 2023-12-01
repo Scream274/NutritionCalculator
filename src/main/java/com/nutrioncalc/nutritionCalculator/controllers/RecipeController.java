@@ -1,7 +1,7 @@
 package com.nutrioncalc.nutritionCalculator.controllers;
 
-
 import com.nutrioncalc.nutritionCalculator.models.*;
+import com.nutrioncalc.nutritionCalculator.models.dto.ProfileStatistic;
 import com.nutrioncalc.nutritionCalculator.models.dto.RecipeDto;
 import com.nutrioncalc.nutritionCalculator.services.DailyStatService;
 import com.nutrioncalc.nutritionCalculator.services.DishIngredientService;
@@ -9,6 +9,7 @@ import com.nutrioncalc.nutritionCalculator.services.RecipeService;
 import com.nutrioncalc.nutritionCalculator.services.UserService;
 import com.nutrioncalc.nutritionCalculator.utils.IngredientMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,10 +53,10 @@ public class RecipeController {
     @Transactional
     public String eatRecipe(@PathVariable("id") Long id,
                             @RequestParam("amount") int amount) {
+        UserNutrition user = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
 
-        DailyStat stat = dailyStatService.findByDate(LocalDate.now()).orElseGet(() -> {
+        DailyStat stat = dailyStatService.findByDateAndUser(LocalDate.now(), user).orElseGet(() -> {
             DailyStat dailyStat = new DailyStat();
-            UserNutrition user = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
             dailyStat.setUser(user);
             dailyStat.setDate(LocalDate.now());
             dailyStat = dailyStatService.save(dailyStat);
@@ -83,16 +84,4 @@ public class RecipeController {
         return "redirect:/recipes";
     }
 
-    @GetMapping("/stat")
-    public String getStat(Model model){
-        DailyStat dailyStat = dailyStatService.findByDate(LocalDate.now()).orElseThrow();
-        Double calories = dailyStat.getDishIngredients()
-                .stream()
-                .map(DishIngredient::getProduct)
-                .map(Product::getCalories)
-                .reduce(Double::sum).orElse(0.0);
-
-        model.addAttribute("calories", calories);
-        return "profile";
-    }
 }

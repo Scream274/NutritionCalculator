@@ -13,13 +13,33 @@
         .navbar-nav {
             align-items: center;
         }
+
+        .navbar-light .navbar-nav .nav-link {
+            color: rgb(255 255 255);
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .container {
+            background: linear-gradient(135deg, rgb(231 231 231 / 46%), rgb(0 0 0 / 24%));
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .table td, .table th {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+            color: #0062cc;
+        }
     </style>
 </head>
 <body>
 
 <!-- Navigation menu -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container px-4">
         <a class="navbar-brand" href="/home">Home Page</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,9 +47,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <!-- Check if the user is authenticated -->
                 <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
                     <a class="nav-link" href="/my-account">My profile</a>
+                </li>
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link" href="/recipes">Recipes</a>
                 </li>
                 <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
                     <form class="form-inline" action="/logout" method="post">
@@ -48,20 +70,18 @@
     </div>
 </nav>
 
-
-
 <!-- Page content -->
 <div class="container mt-4">
     <div class="row">
-        <div class="col-md-12 content mx-md-5">
+        <div class="col-md-12 content">
             <h2>Nutrition Calculator</h2>
-            <p>
+            <p class="text-center mx-auto">
                 The Nutrition Calculator project is designed to assist users in obtaining detailed nutritional
                 information about various food products. With a user-friendly interface, this application allows users
                 to input the name of a food product and receive its nutritional characteristics instantly. The provided
                 data includes essential nutritional values such as calories, serving size, fat content, protein, sodium,
                 potassium, cholesterol, total carbohydrates, fiber, and sugar.</p>
-            <p>
+            <p class="text-center mx-auto">
                 This platform aims to empower individuals in making informed dietary choices by providing comprehensive
                 nutritional insights into different food items. The system fetches real-time data from an external API
                 to ensure accuracy and reliability in the nutritional information provided.</p>
@@ -82,58 +102,42 @@
     <div class="row mt-4" th:if="${product != null}">
         <div class="col-md-12 content" id="productCharacteristics">
             <h2 th:text="'Product: ' + ${product.name.toUpperCase()}">Product Characteristics</h2>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">Property</th>
-                    <th scope="col">Value</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Calories</td>
-                    <td th:text="${product.calories}"></td>
-                </tr>
-                <tr>
-                    <td>Fat Total (g)</td>
-                    <td th:text="${product.fat_total_g}"></td>
-                </tr>
-                <tr>
-                    <td>Fat Saturated (g)</td>
-                    <td th:text="${product.fat_saturated_g}"></td>
-                </tr>
-                <tr>
-                    <td>Protein (g)</td>
-                    <td th:text="${product.protein_g}"></td>
-                </tr>
-                <tr>
-                    <td>Sodium (mg)</td>
-                    <td th:text="${product.sodium_mg}"></td>
-                </tr>
-                <tr>
-                    <td>Potassium (mg)</td>
-                    <td th:text="${product.potassium_mg}"></td>
-                </tr>
-                <tr>
-                    <td>Cholesterol (mg)</td>
-                    <td th:text="${product.cholesterol_mg}"></td>
-                </tr>
-                <tr>
-                    <td>Carbohydrates (g)</td>
-                    <td th:text="${product.carbohydrates_total_g}"></td>
-                </tr>
-                <tr>
-                    <td>Fiber (g)</td>
-                    <td th:text="${product.fiber_g}"></td>
-                </tr>
-                <tr>
-                    <td>Sugar (g)</td>
-                    <td th:text="${product.sugar_g}"></td>
-                </tr>
-                <!-- Add other characteristics -->
-                <!-- ... -->
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-sm table-striped">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Calories</th>
+                        <td th:text="${product.calories}"></td>
+                        <th scope="row">Fat Total (g)</th>
+                        <td th:text="${product.fat_total_g}"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Fat Saturated (g)</th>
+                        <td th:text="${product.fat_saturated_g}"></td>
+                        <th scope="row">Protein (g)</th>
+                        <td th:text="${product.protein_g}"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Sodium (mg)</th>
+                        <td th:text="${product.sodium_mg}"></td>
+                        <th scope="row">Potassium (mg)</th>
+                        <td th:text="${product.potassium_mg}"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Cholesterol (mg)</th>
+                        <td th:text="${product.cholesterol_mg}"></td>
+                        <th scope="row">Carbohydrates (g)</th>
+                        <td th:text="${product.carbohydrates_total_g}"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Fiber (g)</th>
+                        <td th:text="${product.fiber_g}"></td>
+                        <th scope="row">Sugar (g)</th>
+                        <td th:text="${product.sugar_g}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

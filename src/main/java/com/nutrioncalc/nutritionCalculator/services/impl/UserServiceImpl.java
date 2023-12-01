@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
         currentUser.setFullName(userNutrition.getFullName());
         currentUser.setAge(userNutrition.getAge());
         currentUser.setWeight(userNutrition.getWeight());
+        currentUser.setHeight(userNutrition.getHeight());
         currentUser.setGender(userNutrition.getGender());
         currentUser.setBMI(userNutrition.getBMI());
 

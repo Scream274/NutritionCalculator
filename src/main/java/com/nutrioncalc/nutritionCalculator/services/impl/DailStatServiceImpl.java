@@ -1,6 +1,7 @@
 package com.nutrioncalc.nutritionCalculator.services.impl;
 
 import com.nutrioncalc.nutritionCalculator.models.DailyStat;
+import com.nutrioncalc.nutritionCalculator.models.UserNutrition;
 import com.nutrioncalc.nutritionCalculator.repositories.DailyStatRepository;
 import com.nutrioncalc.nutritionCalculator.services.DailyStatService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,11 @@ public class DailStatServiceImpl implements DailyStatService {
     @Override
     public Optional<DailyStat> findByDate(LocalDate date) {
         return dailyStatRepository.findDailyStatByDate(date);
+    }
+
+    @Override
+    public Optional<DailyStat> findByDateAndUser(LocalDate date, UserNutrition user) {
+        return dailyStatRepository.findDailyStatsByDateAndUser(date, user);
     }
 
     @Override
