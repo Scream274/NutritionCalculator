@@ -8,6 +8,8 @@ import com.nutrioncalc.nutritionCalculator.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -23,5 +25,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product save(Product product) {
         return productRepository.save(product);
+    }
+
+    @Override
+    public Optional<Product> findByName(String name) {
+        return productRepository.findByName(name);
     }
 }

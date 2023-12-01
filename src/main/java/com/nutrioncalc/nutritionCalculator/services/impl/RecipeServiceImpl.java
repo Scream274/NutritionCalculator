@@ -34,7 +34,7 @@ public class RecipeServiceImpl implements RecipeService {
         List<RecipeIngredient> ingredients = recipeDto.getIngredients()
                 .stream()
                 .map(recipeIngredientsFromIngredientsDto())
-                .peek(i-> i.setRecipe(recipe))
+                .peek(i -> i.setRecipe(recipe))
                 .toList();
 
         recipe.setRecipeName(recipeDto.getRecipeName());
@@ -45,9 +45,14 @@ public class RecipeServiceImpl implements RecipeService {
 
     private Function<IngredientDto, RecipeIngredient> recipeIngredientsFromIngredientsDto() {
         return pr -> {
-            ProductFromApi productFromApi = productClient.getProductInfo(pr.getName());
-            Product product = objectMapper.convertValue(productFromApi, Product.class);
-            product = productService.save(product);
+
+            Product product = productService.findByName(pr.getName().toLowerCase())
+                    .orElseGet(() -> {
+                        ProductFromApi productFromApi = productClient.getProductInfo(pr.getName());
+                        Product newProduct = objectMapper.convertValue(productFromApi, Product.class);
+                        return productService.save(newProduct);
+                    });
+
             RecipeIngredient ingredient = new RecipeIngredient();
 
             ingredient.setProduct(product);

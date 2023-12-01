@@ -1,7 +1,6 @@
 package com.nutrioncalc.nutritionCalculator.controllers;
 
 import com.nutrioncalc.nutritionCalculator.models.*;
-import com.nutrioncalc.nutritionCalculator.models.dto.ProfileStatistic;
 import com.nutrioncalc.nutritionCalculator.models.dto.RecipeDto;
 import com.nutrioncalc.nutritionCalculator.services.DailyStatService;
 import com.nutrioncalc.nutritionCalculator.services.DishIngredientService;
@@ -9,12 +8,12 @@ import com.nutrioncalc.nutritionCalculator.services.RecipeService;
 import com.nutrioncalc.nutritionCalculator.services.UserService;
 import com.nutrioncalc.nutritionCalculator.utils.IngredientMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -52,7 +51,8 @@ public class RecipeController {
     @PostMapping("/eat-recipe/{id}")
     @Transactional
     public String eatRecipe(@PathVariable("id") Long id,
-                            @RequestParam("amount") int amount) {
+                            @RequestParam("amount") int amount,
+                            RedirectAttributes redirectAttributes) {
         UserNutrition user = userService.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
 
         DailyStat stat = dailyStatService.findByDateAndUser(LocalDate.now(), user).orElseGet(() -> {
@@ -80,8 +80,9 @@ public class RecipeController {
                 .toList();
 
         stat.addDishIngredients(dishIngredients);
+        redirectAttributes.addFlashAttribute("successMessage", recipe.getRecipeName() + " was eaten!");
 
-        return "redirect:/recipes";
+        return "redirect:/my-account";
     }
 
 }

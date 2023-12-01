@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,8 +47,12 @@ public class UserController {
             if (dailyStat.isPresent()) {
                 ProfileStatistic profileStatistic = ProfileStatistic.fromIngredients(dailyStat.get().getDishIngredients());
                 model.addAttribute("profileStatistic", profileStatistic);
-                model.addAttribute("selectedDate", date);
             }
+            else {
+                model.addAttribute("profileStatistic", new ProfileStatistic());
+            }
+
+            model.addAttribute("selectedDate", date);
 
             return "profile";
         }
@@ -57,7 +60,7 @@ public class UserController {
     }
 
     @PostMapping("/update-profile")
-    public String updateUser(@Valid UserForUpdate user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String updateUser(@Valid UserForUpdate user, RedirectAttributes redirectAttributes) {
         UserNutrition userNutrition = objectMapper.convertValue(user, UserNutrition.class);
         userNutrition.calculateBMI();
 
