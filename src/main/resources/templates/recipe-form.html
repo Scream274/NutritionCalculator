@@ -65,6 +65,10 @@
     </div>
 </nav>
 <div class="container mt-4">
+    <div th:if="${errorMessage}" class="alert alert-danger py-2">
+        <p th:text="${errorMessage}" style="
+            margin-bottom: 0px;"></p>
+    </div>
     <h2>Create Recipe</h2>
     <form action="/save-recipe" method="post" th:object="${recipeDto}">
 

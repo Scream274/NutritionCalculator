@@ -41,10 +41,17 @@ public class RecipeController {
     }
 
     @PostMapping("/save-recipe")
-    public String saveRecipe(RecipeDto recipeDto) {
-        Recipe recipe = recipeService.create(recipeDto);
-        recipeService.addRecipe(recipe);
+    public String saveRecipe(RecipeDto recipeDto, Model model) {
+        Recipe recipe;
+        try {
+            recipe = recipeService.create(recipeDto);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("recipeDto", recipeDto);
+            return "recipe-form";
+        }
 
+        recipeService.addRecipe(recipe);
         return "redirect:/recipes";
     }
 

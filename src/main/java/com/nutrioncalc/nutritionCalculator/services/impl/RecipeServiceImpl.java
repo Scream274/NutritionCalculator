@@ -49,6 +49,9 @@ public class RecipeServiceImpl implements RecipeService {
             Product product = productService.findByName(pr.getName().toLowerCase())
                     .orElseGet(() -> {
                         ProductFromApi productFromApi = productClient.getProductInfo(pr.getName());
+                        if (productFromApi.getName() == null) {
+                            throw new IllegalArgumentException("Invalid product: '" + pr.getName() + "'!");
+                        }
                         Product newProduct = objectMapper.convertValue(productFromApi, Product.class);
                         return productService.save(newProduct);
                     });
